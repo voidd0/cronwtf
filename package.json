@@ -1,0 +1,46 @@
+{
+  "name": "@v0idd0/cronwtf",
+  "version": "2.0.0",
+  "description": "cronwtf — explain cron expressions in plain English, preview next runs, catch gotchas (Feb 31, DOM+DOW, every-minute foot-guns). Handles @daily/@hourly/@yearly aliases, named months/weekdays. Free forever from vøiddo.",
+  "main": "src/parser.js",
+  "bin": {
+    "cronwtf": "./bin/cronwtf.js"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "cron",
+    "crontab",
+    "scheduler",
+    "cron-expression",
+    "cron-parser",
+    "explainer",
+    "cli",
+    "devops",
+    "voiddo"
+  ],
+  "author": "vøiddo <support@voiddo.com> (https://voiddo.com)",
+  "license": "MIT",
+  "homepage": "https://voiddo.com/tools/cronwtf/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voidd0/cronwtf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/voidd0/cronwtf/issues",
+    "email": "support@voiddo.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ]
+}
