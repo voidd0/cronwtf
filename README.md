@@ -1,5 +1,10 @@
 # cronwtf
 
+[![npm version](https://img.shields.io/npm/v/@v0idd0/cronwtf.svg?color=A0573A)](https://www.npmjs.com/package/@v0idd0/cronwtf)
+[![npm downloads](https://img.shields.io/npm/dw/@v0idd0/cronwtf.svg?color=1F1A14)](https://www.npmjs.com/package/@v0idd0/cronwtf)
+[![License: MIT](https://img.shields.io/badge/license-MIT-A0573A.svg)](LICENSE)
+[![Node ≥14](https://img.shields.io/badge/node-%E2%89%A514-1F1A14)](package.json)
+
 **Explain cron expressions in plain English.** Preview next run times. Catch common gotchas (Feb 31, DOM+DOW overlap, accidental every-minute runs) before they fire. Handles `@daily`/`@hourly`/`@yearly` aliases and named weekdays/months (`MON-FRI`, `JAN,JUL`).
 
 Free forever gift from [vøiddo](https://voiddo.com).
