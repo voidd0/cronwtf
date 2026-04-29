@@ -1,6 +1,6 @@
 {
   "name": "@v0idd0/cronwtf",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "cronwtf — explain cron expressions in plain English, preview next runs, catch gotchas (Feb 31, DOM+DOW, every-minute foot-guns). Handles @daily/@hourly/@yearly aliases, named months/weekdays. Free forever from vøiddo.",
   "main": "src/parser.js",
   "bin": {
@@ -38,9 +38,18 @@
     "node": ">=14"
   },
   "files": [
-    "bin",
-    "src",
-    "README.md",
-    "LICENSE"
-  ]
+    "bin/",
+    "src/",
+    "LICENSE",
+    "README.md"
+  ],
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "funding": {
+    "type": "individual",
+    "url": "https://voiddo.com/contact/"
+  }
 }
