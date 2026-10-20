@@ -5,9 +5,13 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-A0573A.svg)](LICENSE)
 [![Node ≥14](https://img.shields.io/badge/node-%E2%89%A514-1F1A14)](package.json)
 
+**[Homepage](https://tools.voiddo.com/cronwtf/?ref=cronwtf-readme)** · **[GitHub](https://github.com/voidd0/cronwtf)** · **[npm](https://www.npmjs.com/package/@v0idd0/cronwtf)** · **[All tools](https://tools.voiddo.com/?ref=cronwtf-catalog-readme)** · **[Contact](mailto:support@voiddo.com)**
+
+---
+
 **Explain cron expressions in plain English.** Preview next run times. Catch common gotchas (Feb 31, DOM+DOW overlap, accidental every-minute runs) before they fire. Handles `@daily`/`@hourly`/`@yearly` aliases and named weekdays/months (`MON-FRI`, `JAN,JUL`).
 
-Free forever gift from [vøiddo](https://voiddo.com).
+gift from [vøiddo](https://voiddo.com).
 
 ```
 $ cronwtf "0 9 * * 1-5"
@@ -26,7 +30,7 @@ $ cronwtf "0 9 * * 1-5"
 
 ## Why cronwtf
 
-Nobody remembers cron syntax. `0 */2 * * *` — is that every 2 hours or every 2 minutes? Does `0 0 15 * 1` run on the 15th OR on Mondays? (Answer: both — cron uses OR for DOM+DOW, and that's caused outages.) Does `0 0 31 2 *` ever run? (Answer: never — Feb doesn't have a 31st.)
+Nobody remembers cron syntax. `0 */2 * * *`: is that every 2 hours or every 2 minutes? Does `0 0 15 * 1` run on the 15th OR on Mondays? (Answer: both, cron uses OR for DOM+DOW, and that's caused outages.) Does `0 0 31 2 *` ever run? (Answer: never, Feb doesn't have a 31st.)
 
 `cronwtf` is the quick sanity check you run before pasting into your crontab:
 - **explains** the expression in one readable sentence,
@@ -88,10 +92,10 @@ cronwtf @daily --utc
 
 | Pattern | Warning |
 |---------|---------|
-| `0 0 31 2 *` | `ERROR` — Day 31 does not exist in February. Never fires. |
-| `0 0 15 * 1` | `WARN` — DOM **and** DOW set. Cron runs when **either** matches (OR, not AND). |
-| `* * * * *` | `INFO` — Fires every minute. Usually you want `*/5` or `0 * * * *`. |
-| `0 0 29 2 *` | `INFO` — Feb 29 only exists in leap years. ~4-year gaps. |
+| `0 0 31 2 *` | `ERROR`: Day 31 does not exist in February. Never fires. |
+| `0 0 15 * 1` | `WARN`: DOM **and** DOW set. Cron runs when **either** matches (OR, not AND). |
+| `* * * * *` | `INFO`: Fires every minute. Usually you want `*/5` or `0 * * * *`. |
+| `0 0 29 2 *` | `INFO`: Feb 29 only exists in leap years. ~4-year gaps. |
 
 These are the top crash causes in real cron outages. Catching them at paste-time is cheaper than at 3 AM.
 
@@ -124,14 +128,14 @@ These are the top crash causes in real cron outages. Catching them at paste-time
 | `A-B` | `0 9 * * 1-5` | Range |
 | `A,B,C` | `0 12 * * 1,3,5` | List |
 | `A-B/N` | `0 9-17/2 * * 1-5` | Range with step |
-| `@yearly` | — | `0 0 1 1 *` |
-| `@annually` | — | `0 0 1 1 *` |
-| `@monthly` | — | `0 0 1 * *` |
-| `@weekly` | — | `0 0 * * 0` |
-| `@daily` / `@midnight` | — | `0 0 * * *` |
-| `@hourly` | — | `0 * * * *` |
-| Named months | `JAN`, `FEB`, ..., `DEC` | 1–12 |
-| Named weekdays | `SUN`, `MON`, ..., `SAT` | 0–6 |
+| `@yearly` | n/a | `0 0 1 1 *` |
+| `@annually` | n/a | `0 0 1 1 *` |
+| `@monthly` | n/a | `0 0 1 * *` |
+| `@weekly` | n/a | `0 0 * * 0` |
+| `@daily` / `@midnight` | n/a | `0 0 * * *` |
+| `@hourly` | n/a | `0 * * * *` |
+| Named months | `JAN`, `FEB`, ..., `DEC` | 1-12 |
+| Named weekdays | `SUN`, `MON`, ..., `SAT` | 0-6 |
 
 ## Programmatic use
 
@@ -151,7 +155,7 @@ const {
 for (const expr of pullRequest.changedCronExpressions) {
   const warnings = analyzeWarnings(expr);
   if (warnings.some(w => w.level === 'error')) {
-    github.comment(`⚠ ${expr} — ${warnings[0].message}`);
+    github.comment(`⚠ ${expr}: ${warnings[0].message}`);
   }
 }
 ```
@@ -170,36 +174,19 @@ Useful in CI:
 - run: cronwtf "$CRON_EXPR" --validate
 ```
 
-## From the same studio
-
-vøiddo builds sharp, free-forever CLIs for devs who are tired of paywalls:
-
-- [`@v0idd0/jsonyo`](https://voiddo.com/tools/jsonyo/) — JSON that yells at you
-- [`@v0idd0/tokcount`](https://voiddo.com/tools/tokcount/) — token counter for 60+ LLMs
-- [`@v0idd0/ctxstuff`](https://voiddo.com/tools/ctxstuff/) — stuff a repo into an LLM context
-- [`@v0idd0/promptdiff`](https://voiddo.com/tools/promptdiff/) — diff two prompts
-- [`@v0idd0/httpwut`](https://voiddo.com/tools/httpwut/) — HTTP debugger
-- [`@v0idd0/gitstats`](https://voiddo.com/tools/gitstats/) — local git analytics
-- [`@v0idd0/licenseme`](https://voiddo.com/tools/licenseme/) — LICENSE generator + detector
-- [`@v0idd0/envguard`](https://voiddo.com/tools/envguard/) — .env validator + secret scanner
-- [`@v0idd0/depcheck`](https://voiddo.com/tools/depcheck/) — offline CVE scanner + unused-deps
-- [`@v0idd0/logparse`](https://voiddo.com/tools/logparse/) — structured log parser + aggregator
-
-Full catalog: [voiddo.com/tools](https://voiddo.com/tools/).
-
 ## License
 
-MIT © [vøiddo](https://voiddo.com) — free forever, no asterisks.
+MIT © [vøiddo](https://voiddo.com), no asterisks.
 
 ## Links
 
-- Docs: https://voiddo.com/tools/cronwtf/
+- Docs: https://tools.voiddo.com/cronwtf/?ref=cronwtf-docs-readme
 - Source: https://github.com/voidd0/cronwtf
 - npm: https://npmjs.com/package/@v0idd0/cronwtf
-- Studio: https://voiddo.com
+- Studio: https://voiddo.com/?ref=cronwtf-studio-readme
 - Issues: https://github.com/voidd0/cronwtf/issues
 - Support: support@voiddo.com
 
 ---
 
-Built by [vøiddo](https://voiddo.com/) — a small studio shipping AI-flavoured products, free dev tools, Chrome extensions and weird browser games.
+Maintained by v0idd0.

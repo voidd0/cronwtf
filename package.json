@@ -1,7 +1,7 @@
 {
   "name": "@v0idd0/cronwtf",
-  "version": "2.0.2",
-  "description": "cronwtf — explain cron expressions in plain English, preview next runs, catch gotchas (Feb 31, DOM+DOW, every-minute foot-guns). Handles @daily/@hourly/@yearly aliases, named months/weekdays. Free forever from vøiddo.",
+  "version": "2.0.4",
+  "description": "Explain cron expressions in plain English, preview the next runs and catch gotchas such as Feb 31, day-of-month plus day-of-week, and every-minute schedules.",
   "main": "src/parser.js",
   "bin": {
     "cronwtf": "./bin/cronwtf.js"
@@ -12,17 +12,17 @@
   "keywords": [
     "cron",
     "crontab",
-    "scheduler",
     "cron-expression",
     "cron-parser",
-    "explainer",
-    "cli",
+    "cron-explainer",
+    "cron-validator",
+    "scheduler",
     "devops",
-    "voiddo"
+    "cli"
   ],
   "author": "vøiddo <support@voiddo.com> (https://voiddo.com)",
   "license": "MIT",
-  "homepage": "https://voiddo.com/tools/cronwtf/",
+  "homepage": "https://tools.voiddo.com/cronwtf/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voidd0/cronwtf.git"
@@ -38,15 +38,10 @@
     "node": ">=14"
   },
   "files": [
-    "bin/",
-    "src/",
-    "LICENSE",
-    "README.md"
-  ],
-  "os": [
-    "darwin",
-    "linux",
-    "win32"
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
   ],
   "funding": {
     "type": "individual",
