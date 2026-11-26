@@ -4,7 +4,7 @@
   "description": "Explain cron expressions in plain English, preview the next runs and catch gotchas such as Feb 31, day-of-month plus day-of-week, and every-minute schedules.",
   "main": "src/parser.js",
   "bin": {
-    "cronwtf": "./bin/cronwtf.js"
+    "cronwtf": "bin/cronwtf.js"
   },
   "scripts": {
     "test": "node test.js"
