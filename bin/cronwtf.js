@@ -1,25 +1,25 @@
 #!/usr/bin/env node
-// cronwtf — explain cron. free forever from vøiddo. https://voiddo.com/tools/cronwtf/
 
 const {
   parseCron, getNextRuns, isValidCron, analyzeWarnings, diffExpressions,
   describeFrequency, normalizeAliases, COMMON_PATTERNS,
 } = require('../src/parser');
 
-const RESET = '\x1b[0m';
-const DIM = '\x1b[2m';
-const CYAN = '\x1b[36m';
-const GREEN = '\x1b[32m';
-const YELLOW = '\x1b[33m';
-const RED = '\x1b[31m';
-const BOLD = '\x1b[1m';
+const useColor = process.stdout.isTTY && !process.env.NO_COLOR;
+const ansi = (code) => (useColor ? `\x1b[${code}m` : '');
+const RESET = ansi(0);
+const DIM = ansi(2);
+const CYAN = ansi(36);
+const GREEN = ansi(32);
+const YELLOW = ansi(33);
+const RED = ansi(31);
+const BOLD = ansi(1);
 
 const args = process.argv.slice(2);
 
 function printHelp() {
   console.log(`
-  ${BOLD}cronwtf${RESET} — explain cron expressions, preview next runs, catch gotchas.
-  ${DIM}free forever from vøiddo.${RESET}
+  ${BOLD}cronwtf${RESET}: explain cron expressions, preview next runs, catch gotchas.
 
   ${BOLD}Usage${RESET}
     cronwtf <expression>           explain + next 5 runs
@@ -42,7 +42,7 @@ function printHelp() {
 
   ${BOLD}Aliases${RESET} (recognized)
     @yearly  @annually  @monthly  @weekly  @daily  @midnight  @hourly
-    MON-FRI, JAN,JUL, etc. — named weekdays + months work too.
+    MON-FRI, JAN,JUL, etc.: named weekdays and months work too.
 
   ${BOLD}Examples${RESET}
     cronwtf "0 9 * * 1-5"
@@ -51,11 +51,7 @@ function printHelp() {
     cronwtf diff "0 9 * * *" "0 10 * * *"
     cronwtf patterns
 
-  ${BOLD}Links${RESET}
-    Docs:    https://voiddo.com/tools/cronwtf/
-    Source:  https://github.com/voidd0/cronwtf
-    Studio:  https://voiddo.com
-    Catalog: https://voiddo.com/tools/
+  ${DIM}Docs and issues: https://github.com/voidd0/cronwtf${RESET}
 `);
 }
 
@@ -169,7 +165,6 @@ function explain() {
       console.error(`Error: Invalid cron expression: "${expression}"`);
       console.error('Expected format: "minute hour day month weekday" or an @alias.');
       console.error('Aliases: @yearly @monthly @weekly @daily @hourly');
-      console.error('Docs:    https://voiddo.com/tools/cronwtf/');
     }
     process.exit(flags.validate ? 1 : 1);
   }

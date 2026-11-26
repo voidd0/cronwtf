@@ -1,6 +1,3 @@
-// cronwtf — cron expression parser/explainer. free forever from vøiddo.
-// https://voiddo.com/tools/cronwtf/
-
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
                 'July', 'August', 'September', 'October', 'November', 'December'];
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

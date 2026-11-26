@@ -1,5 +1,3 @@
-// cronwtf — tests. free forever from vøiddo. https://voiddo.com/tools/cronwtf/
-
 const {
   parseCron, getNextRuns, isValidCron, analyzeWarnings, diffExpressions,
   describeFrequency, normalizeAliases, COMMON_PATTERNS, ALIASES,

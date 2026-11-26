@@ -1,44 +1,10 @@
 # cronwtf
 
-[![npm version](https://img.shields.io/npm/v/@v0idd0/cronwtf.svg?color=A0573A)](https://www.npmjs.com/package/@v0idd0/cronwtf)
-[![npm downloads](https://img.shields.io/npm/dw/@v0idd0/cronwtf.svg?color=1F1A14)](https://www.npmjs.com/package/@v0idd0/cronwtf)
-[![License: MIT](https://img.shields.io/badge/license-MIT-A0573A.svg)](LICENSE)
-[![Node ≥14](https://img.shields.io/badge/node-%E2%89%A514-1F1A14)](package.json)
+Explains cron expressions in plain English, lists the next run times and warns about common mistakes. Reach for it before you put a schedule into a crontab.
 
-**[Homepage](https://tools.voiddo.com/cronwtf/?ref=cronwtf-readme)** · **[GitHub](https://github.com/voidd0/cronwtf)** · **[npm](https://www.npmjs.com/package/@v0idd0/cronwtf)** · **[All tools](https://tools.voiddo.com/?ref=cronwtf-catalog-readme)** · **[Contact](mailto:support@voiddo.com)**
-
----
-
-**Explain cron expressions in plain English.** Preview next run times. Catch common gotchas (Feb 31, DOM+DOW overlap, accidental every-minute runs) before they fire. Handles `@daily`/`@hourly`/`@yearly` aliases and named weekdays/months (`MON-FRI`, `JAN,JUL`).
-
-gift from [vøiddo](https://voiddo.com).
-
-```
-$ cronwtf "0 9 * * 1-5"
-
-  0 9 * * 1-5
-
-  → At 9:00 AM, on weekdays
-
-  Next 5 runs:
-    2026-04-23 09:00:00  in 10h
-    2026-04-24 09:00:00  in 1d
-    2026-04-27 09:00:00  in 4d
-    2026-04-28 09:00:00  in 5d
-    2026-04-29 09:00:00  in 6d
-```
-
-## Why cronwtf
-
-Nobody remembers cron syntax. `0 */2 * * *`: is that every 2 hours or every 2 minutes? Does `0 0 15 * 1` run on the 15th OR on Mondays? (Answer: both, cron uses OR for DOM+DOW, and that's caused outages.) Does `0 0 31 2 *` ever run? (Answer: never, Feb doesn't have a 31st.)
-
-`cronwtf` is the quick sanity check you run before pasting into your crontab:
-- **explains** the expression in one readable sentence,
-- **previews** the next N runs in your local timezone,
-- **warns** about the 4 most common foot-guns: impossible dates, DOM+DOW overlap, every-minute runs, leap-year-only rules,
-- **diffs** two expressions field-by-field so you can see what changed in a PR,
-- **lists** 15 common patterns if you just want the recipe,
-- **estimates frequency** over 30 days (runs/day, runs/week, runs/month).
+[![npm](https://img.shields.io/npm/v/@v0idd0/cronwtf?color=00f6d0&labelColor=050914)](https://www.npmjs.com/package/@v0idd0/cronwtf)
+[![test](https://github.com/voidd0/cronwtf/actions/workflows/test.yml/badge.svg)](https://github.com/voidd0/cronwtf/actions/workflows/test.yml)
+[![license](https://img.shields.io/badge/license-MIT-00f6d0?labelColor=050914)](LICENSE)
 
 ## Install
 
@@ -46,147 +12,87 @@ Nobody remembers cron syntax. `0 */2 * * *`: is that every 2 hours or every 2 mi
 npm install -g @v0idd0/cronwtf
 ```
 
-Or one-shot with `npx`:
+Or run it once without installing: `npx @v0idd0/cronwtf --help`. Needs Node.js 18 or newer. No dependencies.
 
-```bash
-npx -y @v0idd0/cronwtf "@hourly"
+## Example
+
+Explain a weekday schedule and list its next runs. The next runs depend on the date and time zone of the machine, these were run on 2026-11-26:
+
+```console
+$ cronwtf '0 9 * * 1-5'
+  0 9 * * 1-5
+
+  → At 9:00 AM, on weekdays
+
+  Next 5 runs:
+    2026-11-27 09:00:00  in 19h
+    2026-11-30 09:00:00  in 4d
+    2026-12-01 09:00:00  in 5d
+    2026-12-02 09:00:00  in 6d
+    2026-12-03 09:00:00  in 7d
 ```
 
-## Quickstart
+Catch a schedule that can never fire:
 
-```bash
-# Plain explain + next 5 runs
-cronwtf "0 9 * * 1-5"
+```console
+$ cronwtf '0 0 31 2 *' -n 3
+  0 0 31 2 *
 
-# Aliases work
-cronwtf @daily
-cronwtf @hourly -n 3
+  → At 12:00 AM, on the 31st, in February
 
-# Named months/weekdays
-cronwtf "0 9 * * MON-FRI"
-cronwtf "0 0 1 JAN,JUL *"
+  ERROR  Day 31 does not exist in February. This rule will never fire.
 
-# Catch gotchas (exit code 2 on impossible dates)
-cronwtf "0 0 31 2 *"
-
-# Machine-readable output
-cronwtf "*/15 * * * *" --json
-
-# Frequency estimate
-cronwtf "0 9 * * 1-5" --freq
-
-# Field-level diff between two expressions
-cronwtf diff "0 9 * * *" "0 10 * * 1-5"
-
-# 15 common patterns with their English meanings
-cronwtf patterns
-
-# CI validator: exit 0 (valid) / 1 (invalid) / 2 (valid but will-never-fire)
-cronwtf "$CRON_EXPR" --validate && echo OK
-
-# Times in UTC instead of local
-cronwtf @daily --utc
+  No runs found in the next 4 years.
 ```
 
-## Gotchas cronwtf catches
 
-| Pattern | Warning |
-|---------|---------|
-| `0 0 31 2 *` | `ERROR`: Day 31 does not exist in February. Never fires. |
-| `0 0 15 * 1` | `WARN`: DOM **and** DOW set. Cron runs when **either** matches (OR, not AND). |
-| `* * * * *` | `INFO`: Fires every minute. Usually you want `*/5` or `0 * * * *`. |
-| `0 0 29 2 *` | `INFO`: Feb 29 only exists in leap years. ~4-year gaps. |
+## Usage
 
-These are the top crash causes in real cron outages. Catching them at paste-time is cheaper than at 3 AM.
+```text
+  cronwtf: explain cron expressions, preview next runs, catch gotchas.
 
-## Options
+  Usage
+    cronwtf <expression>           explain + next 5 runs
+    cronwtf <expression> -n 10     next N runs
+    cronwtf <expression> --json    machine-readable output
+    cronwtf <expression> --freq    frequency estimate (per day/week/month)
+    cronwtf <expression> --validate    exit 0/1/2 (CI gate)
+    cronwtf diff <a> <b>           show field differences
+    cronwtf patterns               print 15 common cron recipes
 
-### Core
-| Flag | Description |
-|------|-------------|
-| `-n, --next <N>` | Next N run times (default 5) |
-| `-j, --json` | Machine-readable output |
-| `-v, --validate` | Exit only; code 0=valid, 1=invalid, 2=never-fires |
-| `--freq` | Runs/day, /week, /month over next 30 days |
-| `--no-warnings` | Skip gotcha detection |
-| `--utc` | Print times in UTC instead of local |
-| `-h, --help` | Show help |
-| `--version` | Print version |
+  Options
+    -n, --next <num>        Next N run times (default: 5)
+    -j, --json              JSON output
+    -v, --validate          Validate and exit
+        --freq              Runs/day, /week, /month over next 30 days
+        --no-warnings       Skip gotcha detection
+        --utc               Show times in UTC instead of local
+    -h, --help              This help
+        --version           Print version
 
-### Subcommands
-| Command | Description |
-|---------|-------------|
-| `cronwtf diff <a> <b>` | Show field-level differences between two expressions |
-| `cronwtf patterns` | List 15 common cron recipes with English meanings |
+  Aliases (recognized)
+    @yearly  @annually  @monthly  @weekly  @daily  @midnight  @hourly
+    MON-FRI, JAN,JUL, etc.: named weekdays and months work too.
 
-## Supported syntax
+  Examples
+    cronwtf "0 9 * * 1-5"
+    cronwtf @daily -n 3
+    cronwtf "0 0 31 2 *" --json      # catches "Feb 31 never fires"
+    cronwtf diff "0 9 * * *" "0 10 * * *"
+    cronwtf patterns
 
-| Syntax | Example | Meaning |
-|--------|---------|---------|
-| `*` | `* * * * *` | Any value |
-| `*/N` | `*/15 * * * *` | Every N units |
-| `A-B` | `0 9 * * 1-5` | Range |
-| `A,B,C` | `0 12 * * 1,3,5` | List |
-| `A-B/N` | `0 9-17/2 * * 1-5` | Range with step |
-| `@yearly` | n/a | `0 0 1 1 *` |
-| `@annually` | n/a | `0 0 1 1 *` |
-| `@monthly` | n/a | `0 0 1 * *` |
-| `@weekly` | n/a | `0 0 * * 0` |
-| `@daily` / `@midnight` | n/a | `0 0 * * *` |
-| `@hourly` | n/a | `0 * * * *` |
-| Named months | `JAN`, `FEB`, ..., `DEC` | 1-12 |
-| Named weekdays | `SUN`, `MON`, ..., `SAT` | 0-6 |
-
-## Programmatic use
-
-```js
-const {
-  parseCron,        // "0 9 * * 1-5" → "At 9:00 AM, on weekdays"
-  getNextRuns,      // (expr, count) → Date[]
-  isValidCron,      // (expr) → boolean
-  analyzeWarnings,  // (expr) → Warning[]  (DOM_AND_DOW, IMPOSSIBLE_DATE, etc.)
-  diffExpressions,  // (a, b) → [{field, a, b}, ...]
-  describeFrequency,// (expr, windowDays) → {runsInWindow, runsPerDay, ...}
-  normalizeAliases, // "@daily" → "0 0 * * *"
-  COMMON_PATTERNS,  // Array of {expr, meaning}
-} = require('@v0idd0/cronwtf/src/parser');
-
-// In a PR-bot:
-for (const expr of pullRequest.changedCronExpressions) {
-  const warnings = analyzeWarnings(expr);
-  if (warnings.some(w => w.level === 'error')) {
-    github.comment(`⚠ ${expr}: ${warnings[0].message}`);
-  }
-}
+  Docs and issues: https://github.com/voidd0/cronwtf
 ```
 
-## Exit codes
+## Gotchas it flags
 
-| Code | Meaning |
-|------|---------|
-| `0`  | Valid, no errors |
-| `1`  | Invalid syntax |
-| `2`  | Syntactically valid but will never fire (impossible-date warning) |
-
-Useful in CI:
-
-```yaml
-- run: cronwtf "$CRON_EXPR" --validate
-```
+It warns about dates that do not exist (Feb 31), schedules that set both day of month and day of week, and every minute schedules. Run times are shown in the local time zone of the machine, or in UTC with `--utc`.
 
 ## License
 
-MIT © [vøiddo](https://voiddo.com), no asterisks.
-
-## Links
-
-- Docs: https://tools.voiddo.com/cronwtf/?ref=cronwtf-docs-readme
-- Source: https://github.com/voidd0/cronwtf
-- npm: https://npmjs.com/package/@v0idd0/cronwtf
-- Studio: https://voiddo.com/?ref=cronwtf-studio-readme
-- Issues: https://github.com/voidd0/cronwtf/issues
-- Support: support@voiddo.com
+MIT, see [LICENSE](LICENSE).
 
 ---
 
-Maintained by v0idd0.
+Made by [vøiddo](https://voiddo.com/?src=gh). More command line tools: [voiddo.com/packages](https://voiddo.com/packages/?src=gh).
+We also run data scrapers for job boards, shops and ad libraries: [voiddo.com/scrapers](https://voiddo.com/scrapers/?src=gh).

@@ -1,6 +1,6 @@
 {
   "name": "@v0idd0/cronwtf",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Explain cron expressions in plain English, preview the next runs and catch gotchas such as Feb 31, day-of-month plus day-of-week, and every-minute schedules.",
   "main": "src/parser.js",
   "bin": {
@@ -22,29 +22,24 @@
   ],
   "author": "vøiddo <support@voiddo.com> (https://voiddo.com)",
   "license": "MIT",
-  "homepage": "https://tools.voiddo.com/cronwtf/",
+  "homepage": "https://voiddo.com/packages/#cronwtf",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voidd0/cronwtf.git"
   },
   "bugs": {
-    "url": "https://github.com/voidd0/cronwtf/issues",
-    "email": "support@voiddo.com"
+    "url": "https://github.com/voidd0/cronwtf/issues"
   },
   "publishConfig": {
     "access": "public"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "files": [
     "bin",
     "src",
     "README.md",
     "LICENSE"
-  ],
-  "funding": {
-    "type": "individual",
-    "url": "https://voiddo.com/contact/"
-  }
+  ]
 }
